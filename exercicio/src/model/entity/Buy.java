@@ -1,0 +1,47 @@
+package model.entity;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class Buy {
+
+    private static AtomicInteger idCounter = new AtomicInteger(0);
+
+    private int id;
+    private List<Product> items;
+
+    public Buy() {
+        this.id = idCounter.getAndIncrement();
+        this.items = new ArrayList<>();
+    }
+
+
+    public void addItem(Product item) {
+        this.items.add(item);
+    }
+
+
+    public void removeItem(Product item) {
+        this.items.remove(item);
+    }
+
+
+    public double getTotalPrice() {
+        double totalPrice = 0;
+
+        for (Product item : items) {
+            totalPrice += item.getPrice();
+        }
+        return totalPrice;
+    }
+
+
+    public int getId() {
+        return this.id;
+    }
+
+    public List<Product> getItems() {
+        return this.items;
+    }
+}
