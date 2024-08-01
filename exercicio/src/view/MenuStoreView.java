@@ -1,7 +1,5 @@
 package view;
 
-import java.util.concurrent.ExecutionException;
-
 public class MenuStoreView {
 
     public static int menuAdmin() {
@@ -31,6 +29,8 @@ public class MenuStoreView {
         System.out.println("5 - Ver notificações");
         System.out.println("6 - Limpar notificações");
         System.out.println("7 - Listar produtos cadastrados no sistema");
+        System.out.println("8 - Mostrar carrinho");
+        System.out.println("9 - Listar compras efetuadas");
         System.out.println("0 - Sair");
         System.out.println("═════════════════════════════════════════════════════════");
         System.out.print("Opção: ");
@@ -48,7 +48,6 @@ public class MenuStoreView {
         System.out.println("            👩‍💻 Desenvolvedores: Henrique e Edenilson 👨‍💻            ");
         System.out.println();
         System.out.println("══════════════════════════════════════════════════════════════════");
-
         System.out.println("═══════════════════════════════════════════════════════════");
         System.out.println("            🔐 Login no Sistema de E-Commerce 🔐          ");
         System.out.println("═══════════════════════════════════════════════════════════");

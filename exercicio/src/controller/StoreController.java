@@ -91,4 +91,13 @@ public class StoreController {
     public String listUsers() {
         return storeFacade.listUsers();
     }
+
+    public String showCart(String userCpf) {
+        return storeFacade.getCart(userCpf);
+    }
+
+    public String showPurchases(String userCpf) {
+        return storeFacade.showPurchases(userCpf);
+    }
+
 }

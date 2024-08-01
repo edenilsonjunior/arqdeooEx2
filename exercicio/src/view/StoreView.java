@@ -1,7 +1,6 @@
 package view;
 
 import controller.StoreController;
-import enums.UserType;
 
 public class StoreView {
 
@@ -16,20 +15,26 @@ public class StoreView {
     public void run() {
 
         do {
+            clearConsole();
+
             var loginData = login();
             var type = storeController.login(loginData[0], loginData[1]);
 
-            if (type == UserType.ADMIN) {
-                adminOptions();
-            }
-            else if (type == UserType.CLIENT) {
-                clientOptions(loginData[0]);
-            }
-            else {
-                System.out.println("Usuário não autorizado!");
+            switch (type) {
+                case ADMIN:
+                    adminOptions();
+                    break;
+                case CLIENT:
+                    clientOptions(loginData[0]);
+                    break;
+                case NOT_AUTHORIZED:
+                    showMessage("Usuário não autorizado!");
+                    break;
+                default:
+                    break;
             }
 
-            option = Integer.parseInt(readString("Deseja continuar? 1-Sim | 0-Nao"));
+            option = Integer.parseInt(readString("Deseja continuar? (1-Sim | 0-Nao): "));
 
         } while (option != 0);
     }
@@ -37,6 +42,7 @@ public class StoreView {
     private void adminOptions(){
 
         do {
+            clearConsole();
             option = MenuStoreView.menuAdmin();
 
         switch (option)
@@ -56,6 +62,9 @@ public class StoreView {
                 showMessage(storeController.addProduct(productName, productDescription, productValue));
                 break;
             case 3:
+                showMessage(storeController.listUsers());
+                break;
+            case 4:
                 showMessage(storeController.listProducts());
                 break;
             case 0:
@@ -64,12 +73,16 @@ public class StoreView {
                 showMessage("Opção inválida!");
                 break;
         }
+            System.out.println("\n\nPressione qualquer tecla para continuar...");
+            System.console().readLine();
+
         } while (option != 0);
     }
 
     private void clientOptions(String cpf) {
 
         do {
+            clearConsole();
             option = MenuStoreView.menuUser();
 
             switch (option) {
@@ -97,6 +110,12 @@ public class StoreView {
                 case 7:
                     showMessage(storeController.listProducts());
                     break;
+                case 8:
+                    showMessage(storeController.showCart(cpf));
+                    break;
+                case 9:
+                    showMessage(storeController.showPurchases(cpf));
+                    break;
                 case 0:
                     showMessage("Saindo...");
                     break;
@@ -104,6 +123,9 @@ public class StoreView {
                     showMessage("Opção inválida!");
                     break;
             }
+
+            System.out.println("\n\nPressione qualquer tecla para continuar...");
+            System.console().readLine();
         }
         while (option != 0);
     }
@@ -113,13 +135,13 @@ public class StoreView {
 
         MenuStoreView.mainMenu();
 
-        var cpf = readString("Digite seu CPF (somente números): ");
+        var cpf = readString("Digite seu CPF ou o login de admin: ");
         var password = readString("Digite sua senha: ");
         return new String[]{cpf, password};
     }
 
     public static String readString(String str){
-        showMessage(str);
+        System.out.print(str);
         return System.console().readLine();
     }
 
@@ -130,4 +152,10 @@ public class StoreView {
     public static void showMessage(){
         System.out.println();
     }
+
+    public static void clearConsole(){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
 }

@@ -1,8 +1,6 @@
 package model.facade;
 
-import model.entity.Notification;
-import model.entity.Product;
-import model.entity.User;
+import model.entity.*;
 import enums.UserType;
 
 import java.security.InvalidParameterException;
@@ -19,6 +17,7 @@ public class StoreFacade implements IStoreFacade {
         products = new ArrayList<>();
     }
 
+
     @Override
     public UserType login(String userCpf, String userPassword) {
 
@@ -26,14 +25,13 @@ public class StoreFacade implements IStoreFacade {
             return UserType.ADMIN;
         }
 
-        for (User user : users) {
-            if(user.getCpf().equals(userCpf) && user.getPassword().equals(userPassword)){
-                return UserType.CLIENT;
-            }
-        }
-
-        return UserType.NOT_AUTHORIZED;
+        return users.stream()
+                .filter(user -> user.getCpf().equals(userCpf) && user.getPassword().equals(userPassword))
+                .map(user -> UserType.CLIENT)
+                .findFirst()
+                .orElse(UserType.NOT_AUTHORIZED);
     }
+
 
     @Override
     public void addProduct(String name, String description, double price) {
@@ -74,15 +72,11 @@ public class StoreFacade implements IStoreFacade {
             throw new InvalidParameterException("Usuário não encontrado");
         }
 
-        if (validatedUser.getCpf().equals(userCpf)) {
-            validatedUser.addBalance(amount);
+        validatedUser.addBalance(amount);
 
-            var title = "Saldo atualizado!";
-            var message = "Seu saldo foi atualizado para " + validatedUser.getBalance();
-
-            var notification = new Notification(title, message);
-            validatedUser.addNotification(notification);
-        }
+        var title = "Saldo atualizado!";
+        var message = "Seu saldo foi atualizado para " + validatedUser.getBalance();
+        sendNotification(validatedUser, title, message);
     }
 
     @Override
@@ -158,10 +152,7 @@ public class StoreFacade implements IStoreFacade {
 
         for (Product p : validatedUser.getCart().getItems()) {
             sb.append("-----------------------").append("\n");
-            sb.append("ID: ").append(p.getId()).append("\n");
-            sb.append("Nome: ").append(p.getName()).append("\n");
-            sb.append("Descrição: ").append(p.getDescription()).append("\n");
-            sb.append("Preço: ").append(p.getPrice()).append("\n");
+            sb.append(p).append("\n");
             sb.append("-----------------------").append("\n");
         }
 
@@ -184,10 +175,9 @@ public class StoreFacade implements IStoreFacade {
             return "Nenhuma notificação";
         }
 
+        sb.append("Notificações de ").append(validatedUser.getName()).append("\n");
         for (Notification n : validatedUser.getNotifications()) {
-            sb.append("-----------------------").append("\n");
-            sb.append(n.getTitle()).append("\n");
-            sb.append(n.getDescription()).append("\n");
+            sb.append(n).append("\n");
             sb.append("-----------------------").append("\n");
         }
 
@@ -236,54 +226,85 @@ public class StoreFacade implements IStoreFacade {
     @Override
     public String listUsers() {
 
-        StringBuilder sb = new StringBuilder();
-
-        if (users.isEmpty()) {
+        if (users.isEmpty()) 
             return "Nenhum usuário cadastrado";
-        }
+        
+        StringBuilder sb = new StringBuilder();
 
         for (User u : users) {
             sb.append("-----------------------").append("\n");
-            sb.append("CPF: ").append(u.getCpf()).append("\n");
-            sb.append("Nome: ").append(u.getName()).append("\n");
-            sb.append("Saldo: ").append(u.getBalance()).append("\n");
-            sb.append("Carrinho:");
-            for (var p : u.getCart().getItems()){
-                sb.append(p);
-                sb.append("-----------------------\n");
-            }
+            sb.append(u).append("\n");
             sb.append("-----------------------").append("\n");
         }
 
         return sb.toString();
     }
 
+    @Override
+    public String showCart(String userCpf){
+
+        var validatedUser = getUserByCpf(userCpf);
+
+        if (validatedUser == null) 
+            throw new InvalidParameterException("Usuário não encontrado");
+        
+        if (validatedUser.getCart().getItems().isEmpty()) 
+            return "Carrinho vazio";
+        
+
+        var sb = new StringBuilder();
+
+        sb.append("Carrinho de compras de ").append(validatedUser.getName()).append("\n");
+        sb.append(validatedUser.getCart()).append("\n");
+        return sb.toString();
+    }
+
+    public String showPurchases(String userCpf){
+            
+            var validatedUser = getUserByCpf(userCpf);
+    
+            if (validatedUser == null) 
+                throw new InvalidParameterException("Usuário não encontrado");
+            
+            if (validatedUser.getPurchases().isEmpty()) 
+                return "Nenhuma compra realizada";
+            
+            var sb = new StringBuilder();
+    
+            sb.append("Compras de ").append(validatedUser.getName()).append("\n");
+            for (Buy b : validatedUser.getPurchases()) {
+
+                sb.append("-----------------------").append("\n");
+                sb.append(b).append("\n");
+                sb.append("-----------------------").append("\n");
+            }
+    
+            return sb.toString();
+    }
+
 
     private User getUserByCpf(String cpf){
-        for (User user : users) {
-            if(user.getCpf().equals(cpf)){
-                return user;
-            }
-        }
-        return null;
+
+        return users.stream()
+                .filter(user -> user.getCpf().equals(cpf))
+                .findFirst()
+                .orElse(null);
     }
 
     private Product getProductById(int id){
-        for (Product product : products) {
-            if(product.getId() == id){
-                return product;
-            }
-        }
-        return null;
+
+        return products.stream()
+                .filter(product -> product.getId() == id)
+                .findFirst()
+                .orElse(null);
     }
 
     private Product getProductByUser(User user, int productId){
-        for (Product product : user.getCart().getItems()) {
-            if(product.getId() == productId){
-                return product;
-            }
-        }
-        return null;
+
+        return user.getCart().getItems().stream()
+                .filter(product -> product.getId() == productId)
+                .findFirst()
+                .orElse(null);
     }
 
     private void sendNotification(User user, String title, String message){

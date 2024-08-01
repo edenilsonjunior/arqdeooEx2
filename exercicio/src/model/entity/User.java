@@ -9,6 +9,7 @@ public class User {
     private final String name;
     private final String password;
     private double balance;
+
     private Buy cart;
     private final List<Buy> purchases;
     private final List<Notification> notifications;
@@ -27,10 +28,9 @@ public class User {
 
     public void addBalance(double value) {
 
-        if(value < 0) {
+        if(value < 0) 
             throw new IllegalArgumentException("O valor deve ser positivo!");
-        }
-
+        
         this.balance += value;
     }
 
@@ -45,6 +45,7 @@ public class User {
                 return item;
             }
         }
+
         throw new IllegalArgumentException("Produto não encontrado no carrinho!");
     }
 
@@ -56,7 +57,6 @@ public class User {
         if(this.cart.getTotalPrice() > this.balance)
             throw new IllegalArgumentException("Saldo insuficiente!");
 
-
         this.balance -= this.cart.getTotalPrice();
 
         Buy buy = this.cart;
@@ -65,6 +65,7 @@ public class User {
         return buy;
     }
 
+
     public void addNotification(Notification notification) {
         this.notifications.add(notification);
     }
@@ -72,8 +73,6 @@ public class User {
     public void clearNotifications() {
         this.notifications.clear();
     }
-
-
 
     public String getCpf() {
         return cpf;
@@ -102,4 +101,23 @@ public class User {
     public String getPassword() {
         return password;
     }
+
+    @Override
+    public String toString() {
+
+        var sb = new StringBuilder();
+
+        sb.append("CPF: ").append(cpf).append("\n");
+        sb.append("Nome: ").append(name).append("\n");
+        sb.append("Saldo: ").append(balance).append("\n");
+        sb.append("Carrinho:");
+        
+        for (var p : cart.getItems()){
+            sb.append(p);
+            sb.append("-----------------------\n");
+        }
+
+        return sb.toString();
+    }
+    
 }

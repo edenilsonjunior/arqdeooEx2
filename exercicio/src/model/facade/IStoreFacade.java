@@ -21,4 +21,6 @@ public interface IStoreFacade {
 
     String listProducts();
     String listUsers();
+    String showCart(String userCpf);
+    String showPurchases(String userCpf);
 }

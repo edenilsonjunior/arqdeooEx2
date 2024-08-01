@@ -1,11 +1,11 @@
 package model.entity;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class Product {
 
     private static final AtomicInteger idCounter = new AtomicInteger(0);
+    
     private final int id;
     private final String name;
     private final String description;
@@ -31,17 +31,21 @@ public class Product {
         return id;
     }
 
+
     public String getName() {
         return name;
     }
+
 
     public String getDescription() {
         return description;
     }
 
+
     public double getPrice() {
         return price;
     }
+
 
     @Override
     public String toString() {

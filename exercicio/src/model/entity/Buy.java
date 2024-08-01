@@ -25,7 +25,6 @@ public class Buy {
 
 
     public void removeItem(Product item) {
-
         this.items.remove(item);
     }
 
@@ -44,7 +43,22 @@ public class Buy {
         return this.id;
     }
 
+    
     public List<Product> getItems() {
         return this.items;
+    }
+
+    @Override
+    public String toString() {
+        var sb = new StringBuilder();
+
+        sb.append("ID da compra: ").append(id).append("\n");
+        sb.append("Total: ").append(getTotalPrice()).append("\n");
+        sb.append("Produtos: ").append("\n");
+        for (Product p : items) {
+            sb.append(p).append("\n");
+        }
+
+        return sb.toString();
     }
 }

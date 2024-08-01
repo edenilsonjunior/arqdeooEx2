@@ -1,4 +1,3 @@
-import model.entity.Product;
 import view.StoreView;
 
 public class Main {
