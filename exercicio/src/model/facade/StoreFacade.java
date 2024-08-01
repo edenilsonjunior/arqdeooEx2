@@ -216,21 +216,19 @@ public class StoreFacade implements IStoreFacade {
     @Override
     public String listProducts() {
 
-        StringBuilder sb = new StringBuilder();
-
         if (products.isEmpty()) {
             return "Nenhum produto cadastrado";
         }
+      
+        StringBuilder sb = new StringBuilder();
 
+        sb.append("═════════════════════════════════════════").append("\n");
+        sb.append("        📦 Detalhes do Produto 📦        ").append("\n");
+        sb.append("═════════════════════════════════════════").append("\n");
         for (Product p : products) {
-            sb.append("-----------------------").append("\n");
-            sb.append("ID: ").append(p.getId()).append("\n");
-            sb.append("Nome: ").append(p.getName()).append("\n");
-            sb.append("Descrição: ").append(p.getDescription()).append("\n");
-            sb.append("Preço: ").append(p.getPrice()).append("\n");
+            sb.append(p);
             sb.append("-----------------------").append("\n");
         }
-
         return sb.toString();
     }
 
@@ -249,6 +247,11 @@ public class StoreFacade implements IStoreFacade {
             sb.append("CPF: ").append(u.getCpf()).append("\n");
             sb.append("Nome: ").append(u.getName()).append("\n");
             sb.append("Saldo: ").append(u.getBalance()).append("\n");
+            sb.append("Carrinho:");
+            for (var p : u.getCart().getItems()){
+                sb.append(p);
+                sb.append("-----------------------\n");
+            }
             sb.append("-----------------------").append("\n");
         }
 

@@ -18,11 +18,14 @@ public class Buy {
 
 
     public void addItem(Product item) {
-        this.items.add(item);
+
+        Product p = new Product(item);
+        this.items.add(p);
     }
 
 
     public void removeItem(Product item) {
+
         this.items.remove(item);
     }
 

@@ -19,6 +19,14 @@ public class Product {
         this.price = price;
     }
 
+    public Product(Product p){
+        this.id = p.id;
+        this.name = p.name;
+        this.description = p.description;
+        this.price = p.price;
+    }
+
+
     public int getId() {
         return id;
     }
@@ -33,5 +41,15 @@ public class Product {
 
     public double getPrice() {
         return price;
+    }
+
+    @Override
+    public String toString() {
+
+        String sb = "ID.......: " + getId() + "\n" +
+                "Nome.....: " + getName() + "\n" +
+                "Descrição: " + getDescription() + "\n" +
+                "Preço....: R$ " + String.format("%.2f", getPrice()) + "\n";
+        return sb;
     }
 }
