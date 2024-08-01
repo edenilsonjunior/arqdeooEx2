@@ -8,8 +8,8 @@ public interface IStoreFacade {
     public void addBalance(String userCpf, double amount);
     public void addProductToCart(String userCpf, int productId);
     public void removeProductFromCart(String userCpf, int productId);
-    public void checkout(String cpfUser);
+    public void checkout(String userCpf);
 
-    public void getNotificationsByUser(String userCpf);
-    public void clearNotifications(String userCpf);
+    public String getNotificationsByUser(String userCpf);
+    public String clearNotifications(String userCpf);
 }
