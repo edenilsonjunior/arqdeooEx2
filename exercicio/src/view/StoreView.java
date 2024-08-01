@@ -34,7 +34,7 @@ public class StoreView {
                     break;
             }
 
-            option = Integer.parseInt(readString("Deseja continuar? (1-Sim | 0-Nao): "));
+            option = readInt("Deseja continuar? (1-Sim | 0-Nao): ");
 
         } while (option != 0);
     }
@@ -57,7 +57,7 @@ public class StoreView {
             case 2:
                 var productName = readString("Digite o Nome do produto.......: ");
                 var productDescription = readString("Digite a Descricao do produto..: ");
-                var productValue = Double.parseDouble(readString("Digite o Valor do produto......: "));
+                var productValue = readDouble("Digite o Valor do produto......: ");
 
                 showMessage(storeController.addProduct(productName, productDescription, productValue));
                 break;
@@ -87,15 +87,15 @@ public class StoreView {
 
             switch (option) {
                 case 1:
-                    var value = Double.parseDouble(readString("Digite o valor a ser adicionado: "));
+                    var value = readDouble("Digite o valor a ser adicionado: ");
                     showMessage(storeController.addBalance(cpf, value));
                     break;
                 case 2:
-                    var id = Integer.parseInt(readString("Digite o ID do produto.........: "));
+                    var id = readInt("Digite o ID do produto.........: ");
                     showMessage(storeController.addProductToCart(cpf, id));
                     break;
                 case 3:
-                    var idProduct = Integer.parseInt(readString("Digite o ID do produto.........: "));
+                    var idProduct = readInt("Digite o ID do produto.........: ");
                     showMessage(storeController.removeProductFromCart(cpf, idProduct));
                     break;
                 case 4:
@@ -123,9 +123,7 @@ public class StoreView {
                     showMessage("Opção inválida!");
                     break;
             }
-
-            System.out.println("\n\nPressione qualquer tecla para continuar...");
-            System.console().readLine();
+            readString("\n\nPressione qualquer tecla para continuar...");
         }
         while (option != 0);
     }
@@ -140,6 +138,42 @@ public class StoreView {
         return new String[]{cpf, password};
     }
 
+
+    public static int readInt(String str){
+        
+        System.out.print(str);
+        boolean converted = false;
+        int num = 0;
+
+        do {
+            try {
+                num = Integer.parseInt(System.console().readLine());
+                converted = true;
+            } catch (Exception e) { System.out.println("Digite um número válido!"); }
+
+        } while (!converted);
+        
+        return num;
+    } 
+
+    private static double readDouble(String str){
+        
+        System.out.print(str);
+        boolean converted = false;
+        double num = 0;
+
+        do {
+            try {
+                num = Double.parseDouble(System.console().readLine());
+                converted = true;
+            } catch (Exception e) { System.out.println("Digite um número válido!");}
+
+        } while (!converted);
+        
+        return num;
+    }
+
+
     public static String readString(String str){
         System.out.print(str);
         return System.console().readLine();
@@ -147,10 +181,6 @@ public class StoreView {
 
     public static void showMessage(String message){
         System.out.println(message);
-    }
-
-    public static void showMessage(){
-        System.out.println();
     }
 
     public static void clearConsole(){
