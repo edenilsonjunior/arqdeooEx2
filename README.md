@@ -9,7 +9,7 @@ O projeto "arqdeooEx2" é um sistema de gerenciamento de loja online que permite
 ## Problema Solucionado pelos Design Patterns
 O principal problema solucionado pelos design patterns escolhidos neste projeto é a complexidade da interação entre diferentes componentes do sistema. Sem uma estrutura adequada, a comunicação entre as diversas partes do sistema, como a gestão de produtos, o gerenciamento de usuários e o carrinho de compras, poderia se tornar desordenada e difícil de manter.
 
-Para resolver esse problema, foram escolhidos design patterns Facade:
+Para resolver esse problema, foi escolhido design patterns Facade:
 - Facade Pattern: Simplifica a interface do sistema, fornecendo uma interface única para interagir com múltiplas funcionalidades subjacentes.
 
 ## Facade Pattern
