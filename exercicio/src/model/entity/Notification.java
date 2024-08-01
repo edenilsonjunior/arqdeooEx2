@@ -34,4 +34,9 @@ public class Notification {
     public void setDescription(String description){
         this.description = description;
     }
+
+    @Override
+    public String toString(){
+        return "Titulo=" + title + ", descricao=" + description;
+    }
 }
