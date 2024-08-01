@@ -1,9 +1,9 @@
 # arqdeooEx2
 
-## Alunos
+## Alunos :pencil2:
 Henrique e Edenilson
 
-## Descrição do Projeto
+## Descrição do Projeto :page_with_curl:
 O projeto "arqdeooEx2" é um sistema de gerenciamento de loja online que permite a interação entre usuários e produtos através de uma interface centralizada. O sistema inclui funcionalidades como login de usuários, gerenciamento de produtos, adição e remoção de itens do carrinho de compras, e processamento de pagamentos.
 
 ## Problema Solucionado pelos Design Patterns
@@ -12,13 +12,13 @@ O principal problema solucionado pelos design patterns escolhidos neste projeto 
 Para resolver esse problema, foi escolhido design patterns Facade:
 - Facade Pattern: Simplifica a interface do sistema, fornecendo uma interface única para interagir com múltiplas funcionalidades subjacentes.
 
-## Facade Pattern
+## Facade Pattern :wrench:
 O Facade Pattern é utilizado para fornecer uma interface simplificada e coesa para as operações complexas do sistema. Ele permite que os clientes interajam com o sistema sem precisar conhecer os detalhes internos.
 
 ## Implementação e Contribuição
 O `IStoreFacade` é a principal interface que utiliza o Facade Pattern. Ela encapsula a complexidade das operações do sistema e oferece métodos simplificados como `addProduct, createUser, checkout,` entre outros. Com isso, o cliente pode realizar operações básicas de forma direta e intuitiva, sem precisar se preocupar com a implementação interna e lógica de negócio dessas operações.
 
-## Uml
+## UML :mag_right:
 ![image](https://github.com/user-attachments/assets/6c2f5d06-b5b6-4da1-bd2d-d2c7f70d8e9a)
 ### View
 ![image](https://github.com/user-attachments/assets/8d3fe926-10a0-4d03-b0fb-1eb30a775063)
