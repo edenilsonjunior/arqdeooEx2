@@ -4,8 +4,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Notification {
 
-    private static AtomicInteger idCounter = new AtomicInteger(0);
-    private int id;
+    private static final AtomicInteger idCounter = new AtomicInteger(0);
+    private final int id;
     private String title;
     private String description;
 

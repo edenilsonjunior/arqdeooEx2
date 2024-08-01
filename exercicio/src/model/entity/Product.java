@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class Product {
 
-    private static AtomicInteger idCounter = new AtomicInteger(0);
+    private static final AtomicInteger idCounter = new AtomicInteger(0);
     private final int id;
     private final String name;
     private final String description;
@@ -20,7 +20,7 @@ public class Product {
     }
 
     public int getId() {
-        return  id;
+        return id;
     }
 
     public String getName() {

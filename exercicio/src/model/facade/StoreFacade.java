@@ -1,9 +1,9 @@
 package model.facade;
 
-import com.sun.jdi.connect.Connector;
 import model.entity.Notification;
 import model.entity.Product;
 import model.entity.User;
+import enums.UserType;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -11,12 +11,28 @@ import java.util.List;
 
 public class StoreFacade implements IStoreFacade {
 
-    private List<User> users;
-    private List<Product> products;
+    private final List<User> users;
+    private final List<Product> products;
 
     public StoreFacade() {
         users = new ArrayList<>();
         products = new ArrayList<>();
+    }
+
+    @Override
+    public UserType login(String userCpf, String userPassword) {
+
+        if(userCpf.equals("admin") && userPassword.equals("admin")){
+            return UserType.ADMIN;
+        }
+
+        for (User user : users) {
+            if(user.getCpf().equals(userCpf) && user.getPassword().equals(userPassword)){
+                return UserType.CLIENT;
+            }
+        }
+
+        return UserType.NOT_AUTHORIZED;
     }
 
     @Override
@@ -126,6 +142,34 @@ public class StoreFacade implements IStoreFacade {
     }
 
     @Override
+    public String getCart(String userCpf) {
+
+        var validatedUser = getUserByCpf(userCpf);
+
+        if (validatedUser == null) {
+            throw new InvalidParameterException("Usuário não encontrado");
+        }
+
+        if (validatedUser.getCart().getItems().isEmpty()) {
+            return "Carrinho vazio";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (Product p : validatedUser.getCart().getItems()) {
+            sb.append("-----------------------").append("\n");
+            sb.append("ID: ").append(p.getId()).append("\n");
+            sb.append("Nome: ").append(p.getName()).append("\n");
+            sb.append("Descrição: ").append(p.getDescription()).append("\n");
+            sb.append("Preço: ").append(p.getPrice()).append("\n");
+            sb.append("-----------------------").append("\n");
+        }
+
+        return sb.toString();
+    }
+
+
+    @Override
     public String getNotificationsByUser(String userCpf) {
 
         StringBuilder sb = new StringBuilder();
@@ -168,13 +212,49 @@ public class StoreFacade implements IStoreFacade {
         }
     }
 
-    public List<User> getUsers() {
-        return users;
+
+    @Override
+    public String listProducts() {
+
+        StringBuilder sb = new StringBuilder();
+
+        if (products.isEmpty()) {
+            return "Nenhum produto cadastrado";
+        }
+
+        for (Product p : products) {
+            sb.append("-----------------------").append("\n");
+            sb.append("ID: ").append(p.getId()).append("\n");
+            sb.append("Nome: ").append(p.getName()).append("\n");
+            sb.append("Descrição: ").append(p.getDescription()).append("\n");
+            sb.append("Preço: ").append(p.getPrice()).append("\n");
+            sb.append("-----------------------").append("\n");
+        }
+
+        return sb.toString();
     }
 
-    public List<Product> getProducts() {
-        return products;
+
+    @Override
+    public String listUsers() {
+
+        StringBuilder sb = new StringBuilder();
+
+        if (users.isEmpty()) {
+            return "Nenhum usuário cadastrado";
+        }
+
+        for (User u : users) {
+            sb.append("-----------------------").append("\n");
+            sb.append("CPF: ").append(u.getCpf()).append("\n");
+            sb.append("Nome: ").append(u.getName()).append("\n");
+            sb.append("Saldo: ").append(u.getBalance()).append("\n");
+            sb.append("-----------------------").append("\n");
+        }
+
+        return sb.toString();
     }
+
 
     private User getUserByCpf(String cpf){
         for (User user : users) {
