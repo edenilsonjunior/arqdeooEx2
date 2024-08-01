@@ -216,20 +216,19 @@ public class StoreFacade implements IStoreFacade {
     @Override
     public String listProducts() {
 
-        StringBuilder sb = new StringBuilder();
-
         if (products.isEmpty()) {
             return "Nenhum produto cadastrado";
         }
+      
+        StringBuilder sb = new StringBuilder();
 
+        sb.append("═════════════════════════════════════════").append("\n");
+        sb.append("        📦 Detalhes do Produto 📦        ").append("\n");
+        sb.append("═════════════════════════════════════════").append("\n");
         for (Product p : products) {
-            sb.append("═════════════════════════════════════════").append("\n");
-            sb.append("        📦 Detalhes do Produto 📦        ").append("\n");
-            sb.append("═════════════════════════════════════════").append("\n");
             sb.append(p);
-            sb.append("═════════════════════════════════════════").append("\n");
+            sb.append("-----------------------").append("\n");
         }
-
         return sb.toString();
     }
 

@@ -5,13 +5,14 @@ import model.facade.StoreFacade;
 
 public class StoreController {
 
-
     private final StoreFacade storeFacade;
 
     public StoreController() {
         this.storeFacade = new StoreFacade();
     }
 
+  
+    // -- User methods
     public String createUser(String cpf, String name, String password) {
 
         try{
@@ -48,6 +49,8 @@ public class StoreController {
         } catch (Exception e){return e.getMessage();}
     }
 
+
+    // -- User Buy methods
     public String addProductToCart(String userCpf, int productId) {
         try{
             storeFacade.addProductToCart(userCpf, productId);
@@ -72,6 +75,7 @@ public class StoreController {
         } catch (Exception e){return e.getMessage();}
     }
 
+    // - Store methods
     public String addProduct(String name, String description, double price) {
         try{
             storeFacade.addProduct(name, description, price);
