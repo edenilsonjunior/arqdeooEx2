@@ -1,5 +1,6 @@
 package model.facade;
 
+import model.entity.Notification;
 import model.entity.Product;
 import model.entity.User;
 
@@ -19,13 +20,30 @@ public class StoreFacade implements  IStoreFacade{
 
     @Override
     public void addProduct(String name, String description, double price) {
+        var product = new Product(name, description, price);
+        products.add(product);
 
+        var title = "Novo produto!";
+        var message = "o produto " + name + " foi adicionado ao sistema";
+        var notification = new Notification(title, message);
+
+        for (User user : users) {
+            user.addNotification(notification);
+        }
     }
 
     @Override
-    public void createUser(String cpf, String name) {
+    public void createUser(String cpf, String name, String password) {
 
+        User user = new User(cpf, name, password);
+
+        var title = "Seja bem-vindo(a) " + name + "!";
+        var message = "Você foi cadastrado(a) com sucesso!";
+
+        var notification = new Notification(title, message);
+        user.addNotification(notification);
     }
+
 
     @Override
     public void addBalance(String userCpf, double amount) {
@@ -38,7 +56,7 @@ public class StoreFacade implements  IStoreFacade{
     }
 
     @Override
-    public void removeProductToCart(String userCpf, int productId) {
+    public void removeProductFromCart(String userCpf, int productId) {
 
     }
 
