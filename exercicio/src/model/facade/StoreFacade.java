@@ -9,16 +9,15 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StoreFacade implements  IStoreFacade{
+public class StoreFacade implements IStoreFacade {
 
     private List<User> users;
     private List<Product> products;
 
-    public StoreFacade(){
+    public StoreFacade() {
         users = new ArrayList<>();
         products = new ArrayList<>();
     }
-
 
     @Override
     public void addProduct(String name, String description, double price) {
@@ -53,6 +52,21 @@ public class StoreFacade implements  IStoreFacade{
     @Override
     public void addBalance(String userCpf, double amount) {
 
+        var validatedUser = getUserByCpf(userCpf);
+
+        if (validatedUser == null) {
+            throw new InvalidParameterException("Usuário não encontrado");
+        }
+
+        if (validatedUser.getCpf().equals(userCpf)) {
+            validatedUser.addBalance(amount);
+
+            var title = "Saldo atualizado!";
+            var message = "Seu saldo foi atualizado para " + validatedUser.getBalance();
+
+            var notification = new Notification(title, message);
+            validatedUser.addNotification(notification);
+        }
     }
 
     @Override
@@ -98,18 +112,60 @@ public class StoreFacade implements  IStoreFacade{
 
 
     @Override
-    public void checkout(String cpfUser) {
+    public void checkout(String userCpf) {
 
+        var validatedUser = getUserByCpf(userCpf);
+
+        if (validatedUser == null) {
+            throw new InvalidParameterException("Usuário não encontrado");
+        }
+        else {
+            var finalizedPurchase = validatedUser.checkout();
+            validatedUser.addNotification(new Notification("Compra (" + finalizedPurchase.getId() + ") foi finalizada", "Compra finalizada com sucesso!"));
+        }
     }
 
     @Override
-    public void getNotificationsByUser(String userCpf) {
+    public String getNotificationsByUser(String userCpf) {
 
+        StringBuilder sb = new StringBuilder();
+
+        var validatedUser = getUserByCpf(userCpf);
+
+        if (validatedUser == null) {
+            throw new InvalidParameterException("Usuário não encontrado");
+        }
+
+        if (validatedUser.getNotifications().isEmpty()) {
+            return "Nenhuma notificação";
+        }
+
+        for (Notification n : validatedUser.getNotifications()) {
+            sb.append("-----------------------").append("\n");
+            sb.append(n.getTitle()).append("\n");
+            sb.append(n.getDescription()).append("\n");
+            sb.append("-----------------------").append("\n");
+        }
+
+        return sb.toString();
     }
 
     @Override
-    public void clearNotifications(String userCpf) {
+    public String clearNotifications(String userCpf) {
 
+        var validatedUser = getUserByCpf(userCpf);
+
+        if (validatedUser == null) {
+            throw new InvalidParameterException("Usuário não encontrado");
+        }
+
+        if (validatedUser.getNotifications().isEmpty()) {
+            return "Nenhuma notificação";
+        }
+        else {
+            validatedUser.clearNotifications();
+            return "Notificações apagadas";
+        }
     }
 
     public List<User> getUsers() {
