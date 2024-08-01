@@ -10,8 +10,8 @@ public class User {
     private final String password;
     private double balance;
     private Buy cart;
-    private List<Buy> purchases;
-    private List<Notification> notifications;
+    private final List<Buy> purchases;
+    private final List<Notification> notifications;
 
     public User(String cpf, String name, String password) {
         this.cpf = cpf;

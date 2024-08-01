@@ -6,10 +6,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Buy {
 
-    private static AtomicInteger idCounter = new AtomicInteger(0);
+    private static final AtomicInteger idCounter = new AtomicInteger(0);
 
-    private int id;
-    private List<Product> items;
+    private final int id;
+    private final List<Product> items;
 
     public Buy() {
         this.id = idCounter.getAndIncrement();
@@ -18,11 +18,14 @@ public class Buy {
 
 
     public void addItem(Product item) {
-        this.items.add(item);
+
+        Product p = new Product(item);
+        this.items.add(p);
     }
 
 
     public void removeItem(Product item) {
+
         this.items.remove(item);
     }
 
